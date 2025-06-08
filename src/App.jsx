@@ -13,7 +13,7 @@ function App() {
         <TodoList />
       </main>
       <footer className="app-footer">
-        <p>© 2025 Task Manager. All rights reserved.(Yash Parmar)</p>
+        <p>© 2025 Task Manager. All rights reserved.(Yash)</p>
       </footer>
     </div>
   )
