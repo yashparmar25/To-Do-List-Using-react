@@ -1,0 +1,7 @@
+version: '3' # This is technically obsolete but works. You can remove it.
+services:
+  vite-app:
+    build: .
+    ports:
+      - "3000:80" # Map host port 3000 to container port 80
+    restart: unless-stopped
