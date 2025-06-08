@@ -2,47 +2,37 @@ pipeline {
     agent any
 
     environment {
-        COMPOSE_PROJECT_NAME = "myapp"
+        // Customize this as per your DockerHub repo if needed
+        REPO_URL = 'https://github.com/yashparmar25/To-Do-List-Using-react.git'
+        BRANCH = 'main'
     }
 
     stages {
         stage('Clone Repository') {
             steps {
-                git url: 'https://github.com/yashparmar25/To-Do-List-Using-react.git', branch: 'main'
+                git branch: "${BRANCH}", url: "${REPO_URL}"
             }
         }
 
-        stage('Build Docker Images') {
+        stage('Build and Run with Docker Compose') {
             steps {
-                sh 'docker-compose build'
-            }
-        }
+                script {
+                    // Stop any running containers
+                    //sh 'docker-compose down'
 
-        stage('Start Services') {
-            steps {
-                sh 'docker-compose up -d'
-            }
-        }
-
-        stage('Test (Optional)') {
-            steps {
-                echo 'Running Tests...'
-                // Add your test commands here
-            }
-        }
-
-        stage('Deploy (Optional)') {
-            steps {
-                echo 'Deploying Application...'
-                // Add deployment logic (e.g., push to registry, deploy to server, etc.)
+                    // Build and start the container
+                    sh 'docker-compose up -d --build'
+                }
             }
         }
     }
 
     post {
-        always {
-            echo 'Cleaning up...'
-            sh 'docker-compose down'
+        success {
+            echo "Deployment successful!"
+        }
+        failure {
+            echo "Deployment failed!"
         }
     }
 }
